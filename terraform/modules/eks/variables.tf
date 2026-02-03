@@ -34,7 +34,7 @@ variable "node_min_size" {
 variable "instance_types" {
   description = "List of instance types for the node group"
   type        = list(string)
-  default     = ["t3.medium"]
+  default     = ["t3.micro"]
 }
 
 variable "tags" {
