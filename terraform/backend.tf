@@ -1,6 +1,6 @@
 terraform {
   backend "remote" {
-    organization = "YOUR_ORG_NAME"
+    organization = "Demoterraform123"
 
     workspaces {
       name = "aws-eks-poc"
