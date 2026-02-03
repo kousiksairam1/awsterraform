@@ -2,8 +2,8 @@ name: "Terraform Infrastructure"
 
 on:
   push:
-    branches: [ "**" ]   # run on any branch push
-  workflow_dispatch:      # allow manual runs
+    branches: [ "**" ]  # run on any branch push
+  workflow_dispatch:
 
 defaults:
   run:
@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      id-token: write  # enable OIDC if you use it for AWS
+      id-token: write  # needed only if you use OIDC for AWS
 
     steps:
       - name: Checkout
@@ -27,8 +27,7 @@ jobs:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
       # OPTIONAL: Configure AWS via OIDC (preferred)
-      # Requires an AWS IAM role trusting GitHub OIDC and repo/env secrets:
-      #   AWS_ROLE_TO_ASSUME, AWS_REGION
+      # Requires setting secrets: AWS_ROLE_TO_ASSUME and AWS_REGION
       - name: Configure AWS credentials (OIDC)
         if: ${{ secrets.AWS_ROLE_TO_ASSUME != '' }}
         uses: aws-actions/configure-aws-credentials@v4
@@ -67,4 +66,3 @@ jobs:
       - name: Terraform Apply
         if: ${{ (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') && github.event_name == 'push' }}
         run: terraform apply -auto-approve -input=false
-``
